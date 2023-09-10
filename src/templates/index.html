@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Question Database</title>
+</head>
+
+<body>
+    <label for="lang">Choose Your Number</label>
+    <select name="languages" id="lang">
+    </select>
+    <button onclick="handleRedirect()">Submit</button>
+    <script>
+        const csvList = {{ csv_list| tojson }};
+        const selectDOM = document.querySelector('#lang');
+        for (let index = 0; index < csvList.length; index++) {
+            const optionDOM = document.createElement('option');
+            optionDOM.value = csvList[index];
+            optionDOM.textContent = csvList[index];
+            selectDOM.appendChild(optionDOM);
+        }
+
+        const handleRedirect = () => {
+            const selectDOM = document.querySelector('#lang');
+            const selectValue = selectDOM.value;
+            window.location.href = `/exam/${selectValue}`
+        }
+    </script>
+</body>
+
+</html>
