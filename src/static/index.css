@@ -1,0 +1,27 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+select {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+button {
+  font-size: 20px;
+  font-weight: bold;
+}

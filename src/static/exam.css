@@ -1,0 +1,33 @@
+body {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.questionBoxItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+select {
+  width: 50%;
+  text-align: center;
+}
+
+button {
+  font-size: 20px;
+}
+
+.result {
+  margin: 10px 0;
+}
+
+.detail {
+  text-align: center;
+  margin: 10px 0;
+}

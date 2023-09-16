@@ -2,27 +2,96 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Database : {{selectFileName}}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='exam.css') }}">
+  <title>Question Database : {{selectFileName}}</title>
 </head>
 
 <body>
-    <h1>{{selectFileName}}</h1>
-    <div class="questionBox">
-        <div class="question"></div>
-        <div class="answer"></div>
-    </div>
-    <script>
-        let answerCount = 0
-        const questionList = {{ questionList| tojson }}
-        const answerList = {{ answerList| tojson }}
-        const question = document.querySelector('.question')
-        const answer = document.querySelector('.answer')
-        question.textContent = questionList[answerCount].split(' ')[0] + ' ' + questionList[answerCount].split(' ')[1]
-        console.log(answerList)
-        console.log(questionList)
-    </script>
+  <h1>{{selectFileName}}</h1>
+  <div class="questionBox"></div>
+  <button>確認答案</button>
+  <div class="result"></div>
+  <div class="resultDetail"></div>
+  <script>
+    const questionList = {{ questionList| tojson }}
+    const answerList = {{ answerList| tojson }}
+    const questionBox = document.querySelector('.questionBox')
+    const allQuestionAnswer = []
+
+    // Normalize data
+    questionList.map((item, index) => {
+      allQuestionAnswer.push({
+        question: item.split(' ')[0] + ' ' + item.split(' ')[1],
+        answer: item.split(' ')[2],
+        options: answerList[index]
+      })
+    })
+
+    // Render quest option pair
+    allQuestionAnswer.forEach((item, index) => {
+      const questionBoxItem = document.createElement('div')
+      questionBoxItem.className = 'questionBoxItem'
+      const question = document.createElement('div')
+      question.textContent = `${index + 1}. ${item.question}`
+      question.className = `question_${index}`
+      questionBoxItem.append(question)
+
+      const selectOption = document.createElement('select')
+      selectOption.className = `question_${index}_option`
+      item.options.map((option) => {
+        const optionItem = document.createElement('option')
+        optionItem.textContent = option
+        optionItem.value = option
+        selectOption.appendChild(optionItem)
+      })
+      questionBoxItem.append(selectOption)
+      questionBox.appendChild(questionBoxItem)
+    })
+
+    let testResult = {
+      correctList: [],
+      wrongList: []
+    }
+
+    const button = document.querySelector('button')
+    button.onclick = () => {
+      // Init
+      testResult.correctList = []
+      testResult.wrongList = []
+
+      // Check answer
+      allQuestionAnswer.forEach((item, index) => {
+        const answer = document.querySelector(`.question_${index}_option`).value
+        if (answer === item.answer) {
+          testResult.correctList.push({
+            index: index,
+            userAnswer: answer,
+            correctAnswer: item.answer
+          })
+        } else {
+          testResult.wrongList.push({
+            index: index,
+            question: item.question,
+            userAnswer: answer,
+            correctAnswer: item.answer
+          })
+        }
+      })
+
+      // Print result
+      const result = document.querySelector('.result')
+      result.textContent = `正確題數: ${testResult.correctList.length} 錯誤題數 ${testResult.wrongList.length}`
+      const resultDetail = document.querySelector('.resultDetail')
+      testResult.wrongList.forEach((wrongItem) => {
+        const detail = document.createElement('div')
+        detail.className = 'detail'
+        detail.textContent = `${wrongItem.question} ${wrongItem.correctAnswer}`
+        resultDetail.appendChild(detail)
+      })
+    }
+  </script>
 </body>
 
 </html>
