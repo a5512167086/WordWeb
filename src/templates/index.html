@@ -13,7 +13,8 @@
     <label for="lang">Choose Your Number</label>
     <select name="languages" id="lang">
     </select>
-    <button onclick="handleRedirect()">Submit</button>
+    <button onclick="handleRedirect('exam')">Submit</button>
+    <button onclick="handleRedirect('review')">Review</button>
     <script>
         const csvList = {{ csv_list| tojson }};
         const selectDOM = document.querySelector('#lang');
@@ -24,10 +25,10 @@
             selectDOM.appendChild(optionDOM);
         }
 
-        const handleRedirect = () => {
+        const handleRedirect = (route) => {
             const selectDOM = document.querySelector('#lang');
             const selectValue = selectDOM.value;
-            window.location.href = `/exam/${selectValue}`
+            window.location.href = `/${route}/${selectValue}`
         }
     </script>
 </body>

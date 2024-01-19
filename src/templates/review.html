@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Database : {{selectFileName}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
+</head>
+
+<body>
+    <div class="questionBox"></div>
+    <script>
+        const questionList = {{ questionList | tojson }}
+        const answerList = {{ answerList | tojson }}
+
+        const allQuestionAnswer = []
+
+        // Normalize data
+        questionList.map((item, index) => {
+            allQuestionAnswer.push({
+                question: item.split(' ')[0] + ' ' + item.split(' ')[1],
+                answer: item.split(' ')[2],
+                options: answerList[index]
+            })
+        })
+
+        const questionBox = document.querySelector('.questionBox')
+        console.log(allQuestionAnswer)
+        allQuestionAnswer.map((item, index) => {
+            const questionBoxItem = document.createElement('div')
+            questionBoxItem.className = 'questionBoxItem'
+            const question = document.createElement('div')
+            question.textContent = `${index + 1}. ${item.question}`
+            question.className = `question_${index}`
+            questionBoxItem.append(question)
+            const answer = document.createElement('div')
+            answer.textContent = item.answer
+            answer.className = `question_${index}`
+            questionBoxItem.append(answer)
+            questionBox.appendChild(questionBoxItem)
+        })
+    </script>
+</body>
+
+</html>
