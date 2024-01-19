@@ -15,8 +15,8 @@
   <div class="result"></div>
   <div class="resultDetail"></div>
   <script>
-    const questionList = {{ questionList| tojson }}
-    const answerList = {{ answerList| tojson }}
+    const questionList = {{ questionList | tojson }}
+    const answerList = {{ answerList | tojson }}
     const questionBox = document.querySelector('.questionBox')
     const allQuestionAnswer = []
 
@@ -60,6 +60,9 @@
       // Init
       testResult.correctList = []
       testResult.wrongList = []
+      const oldResultDetail = document.querySelector('.resultDetail')
+      oldResultDetail.innerHTML = '';
+
 
       // Check answer
       allQuestionAnswer.forEach((item, index) => {
